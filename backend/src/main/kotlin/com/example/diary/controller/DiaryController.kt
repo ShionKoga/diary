@@ -17,11 +17,11 @@ class DiaryController(
     fun getDiaries(authentication: Authentication): List<DiaryDto> {
         val authUser = authentication.toUser()
 
-        return diaryService.findByUser(authUser).map { diary -> diary.toDto() }
+        return diaryService.findByUser(authUser).map { it.toDto() }
     }
 
     @PostMapping
-    fun createItem(authentication: Authentication, @RequestBody payload: CreateDiaryDto) {
+    fun createItem(authentication: Authentication, @RequestBody payload: CreateDiaryDto): List<DiaryDto> {
         val authUser = authentication.toUser()
 
         if (diaryService.existsByTitleAndUser(payload.title, authUser)) {
@@ -35,6 +35,7 @@ class DiaryController(
         )
 
         diaryService.save(diary)
+        return diaryService.findByUser(authUser).map { it.toDto() }
     }
 
     @PutMapping

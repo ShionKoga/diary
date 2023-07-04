@@ -21,6 +21,22 @@ export default class DiaryRepo {
         return response.data
     }
 
+    async postDiary(title, body) {
+        let headers = {}
+        const maybeToken = this.getAuthToken()
+        if (maybeToken !== null && maybeToken !== 'null') {
+            headers = {'Authorization': `Bearer ${maybeToken}`}
+        }
+
+        const response = await axios({
+            method: 'POST',
+            url: '/api/diaries',
+            headers: headers,
+            data: {title, body}
+        })
+        return response.data
+    }
+
     getAuthToken() {
         return window.localStorage.getItem('auth_token')
     }

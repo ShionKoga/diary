@@ -5,10 +5,12 @@ import AuthRepo from '../repo/AuthRepo'
 
 export default function Diaries() {
     const navigate = useNavigate()
+    const diaryRepo = new DiaryRepo()
     const [diaries, setDiaries] = useState([])
+    const [title, setTitle] = useState('')
+    const [body, setBody] = useState('')
 
     useEffect(() => {
-        const diaryRepo = new DiaryRepo()
         diaryRepo.fetchDiaries()
             .then(diary => {
                 setDiaries(diary)
@@ -21,10 +23,33 @@ export default function Diaries() {
         navigate('/')
     }
 
+    const postNewDiary = () => {
+        diaryRepo.postDiary(title, body)
+            .then(diary => {
+                setDiaries(diary)
+                setTitle('')
+                setBody('')
+            })
+    }
+
     return (
         <>
-            <button onClick={logout}>
-                Logout
+            <div>
+                <button onClick={logout}>
+                    Logout
+                </button>
+            </div>
+
+            <label>
+                Title
+                <input type="text" onChange={e => setTitle(e.target.value)}/>
+            </label>
+            <label>
+                Body
+                <input type="text" onChange={e => setBody(e.target.value)}/>
+            </label>
+            <button onClick={postNewDiary}>
+                Post new Diary
             </button>
 
             {diaries.map(diary => (
