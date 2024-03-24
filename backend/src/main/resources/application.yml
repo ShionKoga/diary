@@ -5,8 +5,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/diary
-    username: ""
-    password: ""
+    username: "admin"
+    password: "admin"
 
 logging:
   level:
